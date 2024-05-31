@@ -45,7 +45,9 @@ app = FastAPI()
 async def chat(user_input: str):
     text_history = 'Hello What can I help you with today?'
     formatted_prompt = prompt_format(text_history, user_input)
+    print(formatted_prompt)
     response = await send_request_async(system_prompt, init_reply, formatted_prompt)
+    print (response)
     assistant_reply = response.get("choices")[0].get("message").get("content")
     text_history += f"User: {user_input}\nAssistant: {assistant_reply}\n"
     return {'text': assistant_reply}
