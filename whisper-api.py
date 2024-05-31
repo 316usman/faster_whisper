@@ -14,6 +14,7 @@ async def root():
 
 @app.post("/transcribe/")
 async def transcribe_audio(file: UploadFile = File(...)):
+    start_time = time.time()
     # Save the uploaded file to a temporary location
     with open("temp_audio.mp3", "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
@@ -22,4 +23,6 @@ async def transcribe_audio(file: UploadFile = File(...)):
     # Remove the temporary file
     os.remove("temp_audio.mp3")
     text = ' '.join(segment.text for segment in segments)
+    end_time = time.time()
+    print (f"Total time for receiving and sending the response: {end_time - start_time} seconds")
     return text
