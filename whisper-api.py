@@ -20,6 +20,7 @@ async def root():
 
 @app.post("/transcribe/")
 async def transcribe_audio(file: UploadFile = File(...)):
+    start_time = time.time()
     file_path = "temp_audio.mp3"
     # Save the uploaded file to a temporary location
     with open(file_path, "wb") as buffer:
@@ -27,4 +28,6 @@ async def transcribe_audio(file: UploadFile = File(...)):
     # Perform transcription
     text = await transcribe_audio_async(file_path)
     os.remove(file_path)
+    stop_time = time.time()
+    print(f"Transcription took {stop_time - start_time} seconds")
     return text
