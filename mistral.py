@@ -1,11 +1,10 @@
 from fastapi import FastAPI, HTTPException, Response
-import asyncio
 import aiohttp
 import nest_asyncio
 import boto3
 from botocore.exceptions import BotoCoreError, NoCredentialsError
 from dotenv import load_dotenv
-nest_asyncio.apply()
+
 load_dotenv()
 
 
