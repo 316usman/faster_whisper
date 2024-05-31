@@ -57,9 +57,8 @@ app = FastAPI()
 async def chat(user_input: UserInput):
     global text_history
     text_history = 'Hello What can I help you with today?'
-    formatted_prompt = prompt_format(text_history, user_input)
+    formatted_prompt = prompt_format(text_history, user_input.text)
     response = await send_request_async(system_prompt, init_reply, formatted_prompt)
     assistant_reply = response.get("choices")[0].get("message").get("content")
     text_history += f"User: {user_input}\nAssistant: {assistant_reply}\n"
-    audio_content = synthesize_speech(assistant_reply)
-    return  Response(content=audio_content, media_type="audio/mpeg")
+    return {'text': assistant_reply, 'audio': synthesize_speech(assistant_reply)}
