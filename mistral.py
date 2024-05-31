@@ -34,7 +34,7 @@ async def send_request_async(system_prompt, init_reply, prompt):
             return await response.json()
         
 def prompt_format(text_history, new_text):
-    return f"Text History:{text_history}\nUser{new_text}"
+    return f"Text History:{text_history}\nUser:{new_text}"
 
 def summary_former(text):
     return f"{text_history}\nUser: {text}"
