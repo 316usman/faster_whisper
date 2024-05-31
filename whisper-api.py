@@ -9,21 +9,22 @@ app = FastAPI()
 model_size = "large-v3"
 model = WhisperModel(model_size, device="cuda", compute_type="float16")
 
+async def transcribe_audio_async(file_path):
+    segments, info = model.transcribe(file_path, beam_size=5)
+    text = ' '.join(segment.text for segment in segments)
+    return text
+
 @app.get("/")
 async def root():
     return {"message": "Welcome to the transcription API"}
 
 @app.post("/transcribe/")
 async def transcribe_audio(file: UploadFile = File(...)):
-    start_time = time.time()
+    file_path = "temp_audio.mp3"
     # Save the uploaded file to a temporary location
-    with open("temp_audio.mp3", "wb") as buffer:
+    with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
     # Perform transcription
-    segments, info = model.transcribe("temp_audio.mp3", beam_size=5)
-    # Remove the temporary file
-    os.remove("temp_audio.mp3")
-    text = ' '.join(segment.text for segment in segments)
-    end_time = time.time()
-    print (f"Total time for receiving and sending the response: {end_time - start_time} seconds")
+    text = await transcribe_audio_async(file_path)
+    os.remove(file_path)
     return text
