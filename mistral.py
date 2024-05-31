@@ -43,6 +43,7 @@ def summary_former(text):
 app = FastAPI()
 @app.post("/chat")
 async def chat(user_input: str):
+    print (user_input)
     text_history = 'Hello What can I help you with today?'
     formatted_prompt = prompt_format(text_history, user_input)
     print(formatted_prompt)
