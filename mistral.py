@@ -32,7 +32,7 @@ def prompt_format(text_history, new_text):
 def summary_former(text):
     return f"{text_history}\nUser: {text}"
 
-
+app = FastAPI()
 @app.post("/chat")
 class ChatRequest(BaseModel):
     user_input: str
