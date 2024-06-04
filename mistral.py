@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, Response
-from pydantic import BaseModel
+
 from dotenv import load_dotenv
 from groq import Groq
 load_dotenv()
@@ -34,11 +34,7 @@ def summary_former(text):
 
 app = FastAPI()
 @app.post("/chat")
-class ChatRequest(BaseModel):
-    user_input: str
-
-async def chat(request: ChatRequest):
-    user_input = request.user_input
+def chat(user_input):
     print(user_input)
     text_history = 'Hello What can I help you with today?'
     formatted_prompt = prompt_format(text_history, user_input)
